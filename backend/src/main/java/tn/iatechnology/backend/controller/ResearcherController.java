@@ -2,7 +2,6 @@ package tn.iatechnology.backend.controller;
 
 import jakarta.validation.Valid;
 import tn.iatechnology.backend.dto.ResearcherDTO;
-import tn.iatechnology.backend.service.AuditLogService;
 import tn.iatechnology.backend.service.ResearcherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +15,6 @@ import java.util.List;
 public class ResearcherController {
 
     @Autowired private ResearcherService researcherService;
-    @Autowired private AuditLogService auditLogService;
 
     // ── Lecture (authentifiés uniquement — données internes) ──────────────
 
@@ -54,8 +52,6 @@ public class ResearcherController {
     public ResponseEntity<ResearcherDTO> createResearcher(
             @Valid @RequestBody ResearcherDTO researcherDTO) {   // CORRECTION : @Valid ajouté
         ResearcherDTO created = researcherService.createResearcher(researcherDTO);
-        auditLogService.log("CREATE", "RESEARCHER", created.getId(),
-                "Création du chercheur : " + created.getPrenom() + " " + created.getNom());
         return ResponseEntity.ok(created);
     }
 
@@ -65,20 +61,13 @@ public class ResearcherController {
             @PathVariable Long id,
             @Valid @RequestBody ResearcherDTO researcherDTO) {   // CORRECTION : @Valid ajouté
         ResearcherDTO updated = researcherService.updateResearcher(id, researcherDTO);
-        auditLogService.log("UPDATE", "RESEARCHER", id,
-                "Modification du chercheur : " + updated.getPrenom() + " " + updated.getNom());
         return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteResearcher(@PathVariable Long id) {
-        try {
-            ResearcherDTO r = researcherService.getResearcherById(id);
-            auditLogService.log("DELETE", "RESEARCHER", id,
-                    "Suppression du chercheur : " + r.getPrenom() + " " + r.getNom());
-        } catch (Exception ignored) {}
         researcherService.deleteResearcher(id);
         return ResponseEntity.noContent().build();
     }
-}
+}
