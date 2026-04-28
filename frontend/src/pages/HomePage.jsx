@@ -4,12 +4,12 @@ import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import './HomePage.css';
 
-const IconSearch = () => <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /></svg>;
-const IconArrow = () => <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" /></svg>;
-const IconBook = () => <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" /></svg>;
-const IconUsers = () => <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>;
-const IconDomain = () => <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg>;
-const IconCalendar = () => <svg width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>;
+const IconSearch   = () => <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>;
+const IconArrow    = () => <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>;
+const IconBook     = () => <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>;
+const IconUsers    = () => <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>;
+const IconDomain   = () => <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>;
+const IconCalendar = () => <svg width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>;
 
 function useIntersection(threshold = 0.1) {
     const ref = useRef(null);
@@ -31,11 +31,11 @@ function AnimatedNumber({ target, suffix = '' }) {
     useEffect(() => {
         if (!visible) return;
         const duration = 1400;
-        const start = Date.now();
-        const tick = () => {
-            const elapsed = Date.now() - start;
+        const start    = Date.now();
+        const tick     = () => {
+            const elapsed  = Date.now() - start;
             const progress = Math.min(elapsed / duration, 1);
-            const eased = 1 - Math.pow(1 - progress, 3);
+            const eased    = 1 - Math.pow(1 - progress, 3);
             setCount(Math.round(eased * target));
             if (progress < 1) requestAnimationFrame(tick);
         };
@@ -46,7 +46,7 @@ function AnimatedNumber({ target, suffix = '' }) {
 
 function PublicationCard({ pub, delay = 0 }) {
     const chercheurs = Array.isArray(pub.chercheursNoms) ? pub.chercheursNoms : [];
-    const domaines = Array.isArray(pub.domainesNoms) ? pub.domainesNoms : [];
+    const domaines   = Array.isArray(pub.domainesNoms)   ? pub.domainesNoms   : [];
 
     return (
         <article className="pub-card anim-fade-up" style={{ animationDelay: `${delay}ms` }}>
@@ -131,22 +131,22 @@ export default function HomePage() {
     const navigate = useNavigate();
     const { isAuthenticated } = useAuth();
 
-    const [searchQuery, setSearchQuery] = useState('');
+    const [searchQuery,  setSearchQuery]  = useState('');
     const [publications, setPublications] = useState([]);
-    const [domains, setDomains] = useState([]);
-    const [actualites, setActualites] = useState([]);
-    const [highlights, setHighlights] = useState([]);
-    const [stats, setStats] = useState({ publications: 0, chercheurs: 0, domaines: 0 });
-    const [loading, setLoading] = useState(true);
-    const [homeContent, setHomeContent] = useState({});
+    const [domains,      setDomains]      = useState([]);
+    const [actualites,   setActualites]   = useState([]);
+    const [highlights,   setHighlights]   = useState([]);
+    const [stats,        setStats]        = useState({ publications: 0, chercheurs: 0, domaines: 0 });
+    const [loading,      setLoading]      = useState(true);
+    const [homeContent,  setHomeContent]  = useState({});
 
     const hc = (cle) => homeContent[cle] ?? '';
 
     const [statsRef, statsVisible] = useIntersection(0.2);
-    const [pubsRef, pubsVisible] = useIntersection(0.1);
-    const [domsRef, domsVisible] = useIntersection(0.1);
+    const [pubsRef,  pubsVisible]  = useIntersection(0.1);
+    const [domsRef,  domsVisible]  = useIntersection(0.1);
     const [actusRef, actusVisible] = useIntersection(0.1);
-    const [hlRef, hlVisible] = useIntersection(0.1);
+    const [hlRef,    hlVisible]    = useIntersection(0.1);
 
     useEffect(() => {
         const load = async () => {
@@ -164,13 +164,13 @@ export default function HomePage() {
                     const data = pubRes.value.data;
                     let list, total;
                     if (data && data.content !== undefined) {
-                        list = data.content;
+                        list  = data.content;
                         total = data.totalElements;
                     } else if (Array.isArray(data)) {
-                        list = data;
+                        list  = data;
                         total = data.length;
                     } else {
-                        list = [];
+                        list  = [];
                         total = 0;
                     }
                     setPublications(list.slice(0, 6));
@@ -198,7 +198,7 @@ export default function HomePage() {
 
                 if (hcRes.status === 'fulfilled') {
                     const hcList = Array.isArray(hcRes.value.data) ? hcRes.value.data : [];
-                    const hcMap = {};
+                    const hcMap  = {};
                     hcList.forEach(item => { if (item.actif) hcMap[item.cle] = item.valeur; });
                     setHomeContent(hcMap);
                 }
@@ -310,7 +310,7 @@ export default function HomePage() {
                                 </div>
                             </div>
                             <div className="hero__float-card hero__float-card--2">
-                                <div className="hero__float-card-icon" style={{ background: 'rgba(232,119,34,.15)', color: 'var(--color-accent)' }}>
+                                <div className="hero__float-card-icon" style={{background:'rgba(232,119,34,.15)',color:'var(--color-accent)'}}>
                                     <IconUsers />
                                 </div>
                                 <div>
@@ -328,7 +328,7 @@ export default function HomePage() {
                                     <div className="hero__book-line" />
                                     <div className="hero__book-line hero__book-line--short" />
                                     <div className="hero__book-line" />
-                                    <div className="hero__book-badge"><span>Open<br />Access</span></div>
+                                    <div className="hero__book-badge"><span>Open<br/>Access</span></div>
                                 </div>
                             </div>
                         </div>
@@ -341,9 +341,9 @@ export default function HomePage() {
                 <div className="container">
                     <div className="stats-grid">
                         {[
-                            { icon: <IconBook />, value: stats.publications, suffix: '+', label: 'Publications', color: 'var(--color-primary)' },
-                            { icon: <IconUsers />, value: stats.chercheurs, suffix: '', label: 'Chercheurs', color: 'var(--color-accent)' },
-                            { icon: <IconDomain />, value: stats.domaines, suffix: '', label: 'Domaines de recherche', color: '#22863A' },
+                            { icon: <IconBook />,   value: stats.publications, suffix: '+', label: 'Publications',          color: 'var(--color-primary)' },
+                            { icon: <IconUsers />,  value: stats.chercheurs,   suffix: '',  label: 'Chercheurs',            color: 'var(--color-accent)'  },
+                            { icon: <IconDomain />, value: stats.domaines,     suffix: '',  label: 'Domaines de recherche', color: '#22863A'              },
                         ].map((stat, i) => (
                             <div key={i} className="stat-card" style={{ '--stat-color': stat.color }}>
                                 <div className="stat-card__icon">{stat.icon}</div>
@@ -486,36 +486,36 @@ export default function HomePage() {
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="36" height="36">
                                     <defs>
                                         <linearGradient id="fb" x1="0%" y1="0%" x2="100%" y2="100%">
-                                            <stop offset="0%" style={{ stopColor: '#0066b4', stopOpacity: 1 }} />
-                                            <stop offset="100%" style={{ stopColor: '#003d6e', stopOpacity: 1 }} />
+                                            <stop offset="0%" style={{stopColor:'#0066b4',stopOpacity:1}} />
+                                            <stop offset="100%" style={{stopColor:'#003d6e',stopOpacity:1}} />
                                         </linearGradient>
                                         <linearGradient id="fa" x1="0%" y1="0%" x2="100%" y2="100%">
-                                            <stop offset="0%" style={{ stopColor: '#eb3700', stopOpacity: 1 }} />
-                                            <stop offset="100%" style={{ stopColor: '#c42d00', stopOpacity: 1 }} />
+                                            <stop offset="0%" style={{stopColor:'#eb3700',stopOpacity:1}} />
+                                            <stop offset="100%" style={{stopColor:'#c42d00',stopOpacity:1}} />
                                         </linearGradient>
                                     </defs>
                                     <circle cx="32" cy="32" r="32" fill="url(#fb)" />
-                                    <circle cx="14" cy="20" r="4" fill="white" opacity="0.9" />
-                                    <circle cx="14" cy="32" r="4" fill="white" opacity="0.9" />
-                                    <circle cx="14" cy="44" r="4" fill="white" opacity="0.9" />
-                                    <circle cx="32" cy="14" r="4" fill="url(#fa)" />
-                                    <circle cx="32" cy="26" r="4" fill="url(#fa)" />
-                                    <circle cx="32" cy="38" r="4" fill="url(#fa)" />
-                                    <circle cx="32" cy="50" r="4" fill="url(#fa)" />
-                                    <circle cx="50" cy="24" r="4" fill="white" opacity="0.9" />
-                                    <circle cx="50" cy="40" r="4" fill="white" opacity="0.9" />
-                                    <line x1="18" y1="20" x2="28" y2="14" stroke="white" strokeWidth="1.2" opacity="0.4" />
-                                    <line x1="18" y1="20" x2="28" y2="26" stroke="white" strokeWidth="1.2" opacity="0.4" />
-                                    <line x1="18" y1="32" x2="28" y2="26" stroke="white" strokeWidth="1.2" opacity="0.4" />
-                                    <line x1="18" y1="32" x2="28" y2="38" stroke="white" strokeWidth="1.2" opacity="0.4" />
-                                    <line x1="18" y1="44" x2="28" y2="38" stroke="white" strokeWidth="1.2" opacity="0.4" />
-                                    <line x1="18" y1="44" x2="28" y2="50" stroke="white" strokeWidth="1.2" opacity="0.4" />
-                                    <line x1="36" y1="14" x2="46" y2="24" stroke="white" strokeWidth="1.2" opacity="0.4" />
-                                    <line x1="36" y1="26" x2="46" y2="24" stroke="white" strokeWidth="1.2" opacity="0.4" />
-                                    <line x1="36" y1="26" x2="46" y2="40" stroke="white" strokeWidth="1.2" opacity="0.4" />
-                                    <line x1="36" y1="38" x2="46" y2="24" stroke="white" strokeWidth="1.2" opacity="0.4" />
-                                    <line x1="36" y1="38" x2="46" y2="40" stroke="white" strokeWidth="1.2" opacity="0.4" />
-                                    <line x1="36" y1="50" x2="46" y2="40" stroke="white" strokeWidth="1.2" opacity="0.4" />
+                                    <circle cx="14" cy="20" r="4" fill="white" opacity="0.9"/>
+                                    <circle cx="14" cy="32" r="4" fill="white" opacity="0.9"/>
+                                    <circle cx="14" cy="44" r="4" fill="white" opacity="0.9"/>
+                                    <circle cx="32" cy="14" r="4" fill="url(#fa)"/>
+                                    <circle cx="32" cy="26" r="4" fill="url(#fa)"/>
+                                    <circle cx="32" cy="38" r="4" fill="url(#fa)"/>
+                                    <circle cx="32" cy="50" r="4" fill="url(#fa)"/>
+                                    <circle cx="50" cy="24" r="4" fill="white" opacity="0.9"/>
+                                    <circle cx="50" cy="40" r="4" fill="white" opacity="0.9"/>
+                                    <line x1="18" y1="20" x2="28" y2="14" stroke="white" strokeWidth="1.2" opacity="0.4"/>
+                                    <line x1="18" y1="20" x2="28" y2="26" stroke="white" strokeWidth="1.2" opacity="0.4"/>
+                                    <line x1="18" y1="32" x2="28" y2="26" stroke="white" strokeWidth="1.2" opacity="0.4"/>
+                                    <line x1="18" y1="32" x2="28" y2="38" stroke="white" strokeWidth="1.2" opacity="0.4"/>
+                                    <line x1="18" y1="44" x2="28" y2="38" stroke="white" strokeWidth="1.2" opacity="0.4"/>
+                                    <line x1="18" y1="44" x2="28" y2="50" stroke="white" strokeWidth="1.2" opacity="0.4"/>
+                                    <line x1="36" y1="14" x2="46" y2="24" stroke="white" strokeWidth="1.2" opacity="0.4"/>
+                                    <line x1="36" y1="26" x2="46" y2="24" stroke="white" strokeWidth="1.2" opacity="0.4"/>
+                                    <line x1="36" y1="26" x2="46" y2="40" stroke="white" strokeWidth="1.2" opacity="0.4"/>
+                                    <line x1="36" y1="38" x2="46" y2="24" stroke="white" strokeWidth="1.2" opacity="0.4"/>
+                                    <line x1="36" y1="38" x2="46" y2="40" stroke="white" strokeWidth="1.2" opacity="0.4"/>
+                                    <line x1="36" y1="50" x2="46" y2="40" stroke="white" strokeWidth="1.2" opacity="0.4"/>
                                 </svg>
                                 <span style={{ fontFamily: 'var(--font-serif)', color: 'white', fontWeight: 700 }}>IATech Research</span>
                             </div>

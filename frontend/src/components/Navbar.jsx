@@ -4,24 +4,24 @@ import { useAuth } from '../context/AuthContext';
 import './Navbar.css';
 // ── Icons (SVG inline) ─────────────────────────────────────────────────────
 
-const IconSearch = () => <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /></svg>;
-const IconUser = () => <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>;
-const IconChevron = () => <svg width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></svg>;
-const IconMenu = () => <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" /></svg>;
-const IconClose = () => <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>;
-const IconLogout = () => <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></svg>;
-const IconDash = () => <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /></svg>;
-const IconShield = () => <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>;
+const IconSearch   = () => <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>;
+const IconUser     = () => <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>;
+const IconChevron  = () => <svg width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>;
+const IconMenu     = () => <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>;
+const IconClose    = () => <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>;
+const IconLogout   = () => <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>;
+const IconDash     = () => <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>;
+const IconShield   = () => <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>;
 
 export default function Navbar() {
     const { isAuthenticated, user, isAdmin, isModerator, logout } = useAuth();
-    const navigate = useNavigate();
-    const location = useLocation();
+    const navigate  = useNavigate();
+    const location  = useLocation();
 
-    const [scrolled, setScrolled] = useState(false);
-    const [mobileOpen, setMobileOpen] = useState(false);
+    const [scrolled,     setScrolled]     = useState(false);
+    const [mobileOpen,   setMobileOpen]   = useState(false);
     const [userMenuOpen, setUserMenuOpen] = useState(false);
-    const [searchQuery, setSearchQuery] = useState('');
+    const [searchQuery,  setSearchQuery]  = useState('');
 
     const userMenuRef = useRef(null);
 
@@ -60,9 +60,10 @@ export default function Navbar() {
     };
 
     const navLinks = [
-        { to: '/', label: 'Accueil' },
+        { to: '/',             label: 'Accueil' },
         { to: '/publications', label: 'Publications' },
-
+        { to: '/researchers',  label: 'Chercheurs' },
+        { to: '/highlights',   label: 'À la une' },
     ];
 
     return (
@@ -76,36 +77,36 @@ export default function Navbar() {
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="32" height="32">
                                 <defs>
                                     <linearGradient id="nb" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" style={{ stopColor: '#0066b4', stopOpacity: 1 }} />
-                                        <stop offset="100%" style={{ stopColor: '#003d6e', stopOpacity: 1 }} />
+                                        <stop offset="0%" style={{stopColor:'#0066b4',stopOpacity:1}} />
+                                        <stop offset="100%" style={{stopColor:'#003d6e',stopOpacity:1}} />
                                     </linearGradient>
                                     <linearGradient id="na" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" style={{ stopColor: '#eb3700', stopOpacity: 1 }} />
-                                        <stop offset="100%" style={{ stopColor: '#c42d00', stopOpacity: 1 }} />
+                                        <stop offset="0%" style={{stopColor:'#eb3700',stopOpacity:1}} />
+                                        <stop offset="100%" style={{stopColor:'#c42d00',stopOpacity:1}} />
                                     </linearGradient>
                                 </defs>
                                 <circle cx="32" cy="32" r="32" fill="url(#nb)" />
-                                <circle cx="14" cy="20" r="4" fill="white" opacity="0.9" />
-                                <circle cx="14" cy="32" r="4" fill="white" opacity="0.9" />
-                                <circle cx="14" cy="44" r="4" fill="white" opacity="0.9" />
-                                <circle cx="32" cy="14" r="4" fill="url(#na)" />
-                                <circle cx="32" cy="26" r="4" fill="url(#na)" />
-                                <circle cx="32" cy="38" r="4" fill="url(#na)" />
-                                <circle cx="32" cy="50" r="4" fill="url(#na)" />
-                                <circle cx="50" cy="24" r="4" fill="white" opacity="0.9" />
-                                <circle cx="50" cy="40" r="4" fill="white" opacity="0.9" />
-                                <line x1="18" y1="20" x2="28" y2="14" stroke="white" strokeWidth="1.2" opacity="0.4" />
-                                <line x1="18" y1="20" x2="28" y2="26" stroke="white" strokeWidth="1.2" opacity="0.4" />
-                                <line x1="18" y1="32" x2="28" y2="26" stroke="white" strokeWidth="1.2" opacity="0.4" />
-                                <line x1="18" y1="32" x2="28" y2="38" stroke="white" strokeWidth="1.2" opacity="0.4" />
-                                <line x1="18" y1="44" x2="28" y2="38" stroke="white" strokeWidth="1.2" opacity="0.4" />
-                                <line x1="18" y1="44" x2="28" y2="50" stroke="white" strokeWidth="1.2" opacity="0.4" />
-                                <line x1="36" y1="14" x2="46" y2="24" stroke="white" strokeWidth="1.2" opacity="0.4" />
-                                <line x1="36" y1="26" x2="46" y2="24" stroke="white" strokeWidth="1.2" opacity="0.4" />
-                                <line x1="36" y1="26" x2="46" y2="40" stroke="white" strokeWidth="1.2" opacity="0.4" />
-                                <line x1="36" y1="38" x2="46" y2="24" stroke="white" strokeWidth="1.2" opacity="0.4" />
-                                <line x1="36" y1="38" x2="46" y2="40" stroke="white" strokeWidth="1.2" opacity="0.4" />
-                                <line x1="36" y1="50" x2="46" y2="40" stroke="white" strokeWidth="1.2" opacity="0.4" />
+                                <circle cx="14" cy="20" r="4" fill="white" opacity="0.9"/>
+                                <circle cx="14" cy="32" r="4" fill="white" opacity="0.9"/>
+                                <circle cx="14" cy="44" r="4" fill="white" opacity="0.9"/>
+                                <circle cx="32" cy="14" r="4" fill="url(#na)"/>
+                                <circle cx="32" cy="26" r="4" fill="url(#na)"/>
+                                <circle cx="32" cy="38" r="4" fill="url(#na)"/>
+                                <circle cx="32" cy="50" r="4" fill="url(#na)"/>
+                                <circle cx="50" cy="24" r="4" fill="white" opacity="0.9"/>
+                                <circle cx="50" cy="40" r="4" fill="white" opacity="0.9"/>
+                                <line x1="18" y1="20" x2="28" y2="14" stroke="white" strokeWidth="1.2" opacity="0.4"/>
+                                <line x1="18" y1="20" x2="28" y2="26" stroke="white" strokeWidth="1.2" opacity="0.4"/>
+                                <line x1="18" y1="32" x2="28" y2="26" stroke="white" strokeWidth="1.2" opacity="0.4"/>
+                                <line x1="18" y1="32" x2="28" y2="38" stroke="white" strokeWidth="1.2" opacity="0.4"/>
+                                <line x1="18" y1="44" x2="28" y2="38" stroke="white" strokeWidth="1.2" opacity="0.4"/>
+                                <line x1="18" y1="44" x2="28" y2="50" stroke="white" strokeWidth="1.2" opacity="0.4"/>
+                                <line x1="36" y1="14" x2="46" y2="24" stroke="white" strokeWidth="1.2" opacity="0.4"/>
+                                <line x1="36" y1="26" x2="46" y2="24" stroke="white" strokeWidth="1.2" opacity="0.4"/>
+                                <line x1="36" y1="26" x2="46" y2="40" stroke="white" strokeWidth="1.2" opacity="0.4"/>
+                                <line x1="36" y1="38" x2="46" y2="24" stroke="white" strokeWidth="1.2" opacity="0.4"/>
+                                <line x1="36" y1="38" x2="46" y2="40" stroke="white" strokeWidth="1.2" opacity="0.4"/>
+                                <line x1="36" y1="50" x2="46" y2="40" stroke="white" strokeWidth="1.2" opacity="0.4"/>
                             </svg>
                         </div>
                         <div>
@@ -114,7 +115,18 @@ export default function Navbar() {
                         </div>
                     </Link>
 
-
+                    {/* Search */}
+                    <form className="navbar__search" onSubmit={handleSearch} role="search">
+                        <span className="navbar__search-icon" aria-hidden="true"><IconSearch /></span>
+                        <input
+                            className="navbar__search-input"
+                            type="search"
+                            placeholder="Rechercher publications, chercheurs..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            aria-label="Rechercher"
+                        />
+                    </form>
 
                     {/* Desktop Nav */}
                     <nav className="navbar__nav" aria-label="Liens principaux">
@@ -239,7 +251,7 @@ export default function Navbar() {
                         </>
                     ) : (
                         <>
-                            <Link to="/login" className="navbar__mobile-link">Connexion</Link>
+                            <Link to="/login"    className="navbar__mobile-link">Connexion</Link>
                             <Link to="/register" className="navbar__mobile-link navbar__mobile-link--accent">S'inscrire</Link>
                         </>
                     )}
