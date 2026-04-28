@@ -1,0 +1,244 @@
+.researcher-management {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.researcher-management h2 {
+    color: var(--primary);
+    margin-bottom: 2rem;
+    border-bottom: 2px solid var(--primary);
+    padding-bottom: 0.5rem;
+}
+
+.search-bar {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.search-input {
+    flex: 2;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+}
+
+.search-select {
+    flex: 1;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    background-color: white;
+}
+
+.btn-add {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    transition: var(--transition);
+}
+
+.btn-add:hover {
+    background-color: var(--primary-dark);
+}
+
+.form-modal {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid #eee;
+}
+
+.form-modal h3 {
+    color: var(--primary);
+    margin-bottom: 1.5rem;
+}
+
+.researcher-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.form-group input,
+.form-group select {
+    padding: 0.6rem;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    font-size: 0.95rem;
+}
+
+.checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    max-height: 150px;
+    overflow-y: auto;
+    border: 1px solid #eee;
+    padding: 0.8rem;
+    border-radius: var(--border-radius);
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-weight: normal;
+}
+
+.form-actions {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+.researchers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+    align-items: start;
+}
+
+/* framer-motion wrappe chaque carte dans un div */
+.researchers-grid > div {
+    min-width: 0;
+}
+
+.researcher-card {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    box-shadow: var(--box-shadow);
+    transition: var(--transition);
+    border: 1px solid #eee;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.researcher-card h3 {
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+}
+
+.researcher-card p {
+    color: #555;
+    margin: 0.3rem 0;
+    font-size: 0.95rem;
+}
+
+.card-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.btn-edit {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.btn-delete {
+    background-color: #dc2626;
+    color: #ffffff;
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.btn-delete:hover {
+    background-color: #b91c1c;
+}
+
+.loader {
+    text-align: center;
+    padding: 3rem;
+    color: var(--primary);
+    font-size: 1.2rem;
+}
+
+@media (max-width: 768px) {
+    .search-bar {
+        flex-direction: column;
+    }
+    .researcher-form {
+        grid-template-columns: 1fr;
+    }
+}
+/* ── Bouton retour ── */
+.btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: 2px solid #0066b4;
+    color: #0066b4;
+    padding: 0.45rem 1rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 1.5rem;
+    transition: all 0.2s ease;
+}
+.btn-back:hover {
+    background-color: #0066b4;
+    color: white;
+}

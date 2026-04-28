@@ -1,0 +1,69 @@
+.admin-panel {
+    padding: 2rem 0;
+    min-height: calc(100vh - 70px - 100px);
+}
+
+.admin-panel h1 {
+    color: var(--primary);
+    margin-bottom: 2rem;
+    border-bottom: 2px solid var(--primary);
+    padding-bottom: 0.5rem;
+}
+
+.admin-dashboard {
+    margin-top: 1rem;
+}
+
+.admin-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.admin-card {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    transition: var(--transition);
+    overflow: hidden;
+    border: 1px solid #eee;
+}
+
+.card-link {
+    display: block;
+    padding: 2rem;
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+}
+
+.card-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.admin-card h3 {
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+    font-size: 1.3rem;
+}
+
+.admin-card p {
+    color: #666;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* Style pour la navigation de retour (optionnel) */
+.back-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
