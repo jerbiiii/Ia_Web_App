@@ -1,0 +1,253 @@
+/* ══════════════════════ SearchPage ══════════════════════ */
+
+.sp-page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: calc(var(--navbar-h, 70px) + 40px) 24px 80px;
+}
+
+/* ── En-tête ── */
+.sp-header {
+    text-align: center;
+    margin-bottom: 36px;
+}
+.sp-header__title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin: 0 0 8px;
+}
+.sp-header__sub {
+    color: #64748b;
+    font-size: 1rem;
+    margin: 0;
+}
+
+/* ── Formulaire ── */
+.sp-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,.08);
+    padding: 24px;
+    margin-bottom: 32px;
+}
+
+.sp-form__input {
+    flex: 1 1 200px;
+    padding: 11px 16px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: .95rem;
+    background: #f8fafc;
+    outline: none;
+    transition: border-color .2s, background .2s;
+    box-sizing: border-box;
+}
+.sp-form__input:focus {
+    border-color: #0066b4;
+    background: #fff;
+}
+
+.sp-form__btn {
+    flex-shrink: 0;
+    padding: 11px 28px;
+    background: #0066b4;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: .95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .2s, transform .15s;
+}
+.sp-form__btn:hover {
+    background: #003d6e;
+    transform: translateY(-1px);
+}
+
+/* ── Loading ── */
+.sp-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 48px;
+    color: #64748b;
+    font-size: .95rem;
+}
+.sp-spinner {
+    width: 22px;
+    height: 22px;
+    border: 3px solid #e2e8f0;
+    border-top-color: #0066b4;
+    border-radius: 50%;
+    animation: sp-spin .7s linear infinite;
+}
+@keyframes sp-spin { to { transform: rotate(360deg); } }
+
+/* ── Compteur ── */
+.sp-count {
+    font-size: .9rem;
+    color: #64748b;
+    margin: 0 0 20px;
+}
+
+/* ── Liste des cartes ── */
+.sp-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* ── Carte publication ── */
+.sp-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 24px 28px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.05);
+    transition: box-shadow .2s, transform .2s, border-color .2s;
+}
+.sp-card:hover {
+    box-shadow: 0 8px 28px rgba(0,102,180,.12);
+    transform: translateY(-3px);
+    border-color: #bfdbfe;
+}
+
+/* Corps de la carte (gauche) */
+.sp-card__body {
+    flex: 1;
+    min-width: 0;
+}
+
+.sp-card__top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.sp-card__badge {
+    background: #dbeafe;
+    color: #1d4ed8;
+    font-size: .72rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+
+.sp-card__year {
+    font-size: .82rem;
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+.sp-card__title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0 0 8px;
+    line-height: 1.45;
+}
+
+.sp-card__authors {
+    font-size: .85rem;
+    color: #0066b4;
+    font-weight: 500;
+    margin: 0 0 10px;
+}
+
+.sp-card__abstract {
+    font-size: .875rem;
+    color: #475569;
+    line-height: 1.65;
+    margin: 0 0 14px;
+}
+
+.sp-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.sp-card__tag {
+    background: #f0fdf4;
+    color: #15803d;
+    border: 1px solid #bbf7d0;
+    font-size: .72rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+}
+
+/* Action (droite) */
+.sp-card__action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.sp-card__btn {
+    display: inline-block;
+    background: #0066b4;
+    color: #fff;
+    font-size: .85rem;
+    font-weight: 700;
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background .2s;
+}
+.sp-card__btn:hover { background: #003d6e; }
+
+.sp-card__doi {
+    background: #fef3c7;
+    color: #92400e;
+    font-size: .72rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 6px;
+    letter-spacing: .5px;
+}
+
+/* ── État initial (avant recherche) ── */
+.sp-hint {
+    text-align: center;
+    padding: 60px 20px;
+    color: #94a3b8;
+}
+.sp-hint span {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 12px;
+}
+.sp-hint p {
+    font-size: 1rem;
+    margin: 0;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+    .sp-card {
+        flex-direction: column;
+    }
+    .sp-card__action {
+        flex-direction: row;
+        width: 100%;
+    }
+    .sp-card__btn {
+        flex: 1;
+        text-align: center;
+    }
+}

@@ -1,0 +1,55 @@
+/* ══════════════════════ Footer.css ══════════════════════ */
+
+.footer {
+    background: #0f172a;
+    color: rgba(255,255,255,.75);
+    margin-top: 60px;
+}
+.footer__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 48px 24px 32px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 40px;
+}
+.footer__brand span {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #fff;
+    display: block;
+    margin-bottom: 8px;
+}
+.footer__brand p { font-size: .85rem; line-height: 1.6; }
+.footer__links h4 {
+    font-size: .9rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 12px;
+}
+.footer__links a {
+    display: block;
+    color: rgba(255,255,255,.65);
+    text-decoration: none;
+    font-size: .85rem;
+    margin-bottom: 8px;
+    transition: color .2s;
+}
+.footer__links a:hover { color: #fff; }
+.footer__bottom {
+    text-align: center;
+    padding: 16px 24px;
+    border-top: 1px solid rgba(255,255,255,.08);
+    font-size: .8rem;
+    color: rgba(255,255,255,.4);
+}
+
+@media (max-width: 640px) {
+    .footer__inner { grid-template-columns: 1fr; gap: 24px; }
+}
+
+/* ── Sélection de texte sur fond sombre ── */
+.footer *::selection {
+    background: rgba(255,255,255,.3);
+    color: #ffffff;
+}
