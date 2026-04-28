@@ -18,6 +18,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.security.web.header.writers.XXssProtectionHeaderWriter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -84,30 +86,35 @@ public class WebSecurityConfig {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 
-                // CSRF désactivé — justifié pour une API REST JWT stateless
-                .csrf(csrf -> csrf.disable())
+                // CSRF activé avec configuration optimisée pour SPA (React)
+                .csrf(csrf -> {
+                    CsrfTokenRequestAttributeHandler requestHandler = new CsrfTokenRequestAttributeHandler();
+                    requestHandler.setCsrfRequestAttributeName(null);
+                    csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                            .csrfTokenRequestHandler(requestHandler);
+                })
 
-                .headers(headers -> headers
-                        // X-XSS-Protection: 1; mode=block — bloque les attaques XSS détectées
-                        .xssProtection(xss -> xss
-                                .headerValue(XXssProtectionHeaderWriter.HeaderValue.ENABLED_MODE_BLOCK))
-                        // X-Frame-Options: DENY — empêche le clickjacking via iframes
-                        .frameOptions(frame -> frame.deny())
-                        // X-Content-Type-Options: nosniff — empêche le MIME-type sniffing
-                        .contentTypeOptions(contentType -> {
-                        })
-                        // Content-Security-Policy — restreint les sources de scripts/styles
-                        .contentSecurityPolicy(csp -> csp
-                                .policyDirectives(
-                                        "default-src 'self'; " +
-                                                "script-src 'self'; " +
-                                                "style-src 'self' 'unsafe-inline'; "
-                                                +
-                                                "img-src 'self' data: https:; "
-                                                +
-                                                "font-src 'self' data:; "
-                                                +
-                                                "connect-src 'self' http://localhost:8080 http://localhost:5000; ")))
+                .headers(headers -> {
+                    headers.xssProtection(
+                            xss -> xss.headerValue(XXssProtectionHeaderWriter.HeaderValue.ENABLED_MODE_BLOCK));
+                    headers.frameOptions(frame -> frame.deny());
+                    headers.contentTypeOptions(contentType -> {
+                    });
+                    headers.httpStrictTransportSecurity(hsts -> hsts.includeSubDomains(true).maxAgeInSeconds(31536000));
+                    headers.referrerPolicy(referrer -> referrer.policy(
+                            org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN));
+                    headers.permissionsPolicy(
+                            permissions -> permissions.policy("camera=(), microphone=(), geolocation=(), payment=()"));
+                    headers.contentSecurityPolicy(csp -> csp.policyDirectives(
+                            "default-src 'self'; " +
+                                    "script-src 'self'; " +
+                                    "style-src 'self' 'unsafe-inline'; " +
+                                    "img-src 'self' data: https:; " +
+                                    "font-src 'self' data:; " +
+                                    "connect-src 'self' http://localhost:8080 http://localhost:5000; " +
+                                    "frame-ancestors 'none'; " +
+                                    "form-action 'self'; "));
+                })
 
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(unauthorizedHandler))
 
@@ -127,6 +134,21 @@ public class WebSecurityConfig {
         http.addFilterBefore(
                 authenticationJwtTokenFilter(),
                 UsernamePasswordAuthenticationFilter.class);
+
+        http.addFilterAfter(new org.springframework.web.filter.OncePerRequestFilter() {
+            @Override
+            protected void doFilterInternal(jakarta.servlet.http.HttpServletRequest request,
+                    jakarta.servlet.http.HttpServletResponse response,
+                    jakarta.servlet.FilterChain filterChain)
+                    throws jakarta.servlet.ServletException, java.io.IOException {
+                org.springframework.security.web.csrf.CsrfToken csrfToken = (org.springframework.security.web.csrf.CsrfToken) request
+                        .getAttribute(org.springframework.security.web.csrf.CsrfToken.class.getName());
+                if (null != csrfToken && null != csrfToken.getHeaderName()) {
+                    response.setHeader(csrfToken.getHeaderName(), csrfToken.getToken());
+                }
+                filterChain.doFilter(request, response);
+            }
+        }, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

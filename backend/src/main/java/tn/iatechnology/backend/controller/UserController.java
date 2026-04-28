@@ -1,22 +1,5 @@
 package tn.iatechnology.backend.controller;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import tn.iatechnology.backend.dto.AdminCreateUserRequest;
 import tn.iatechnology.backend.dto.MessageResponse;
 import tn.iatechnology.backend.dto.RoleUpdateRequest;
@@ -25,6 +8,15 @@ import tn.iatechnology.backend.entity.Role;
 import tn.iatechnology.backend.entity.User;
 import tn.iatechnology.backend.repository.UserRepository;
 import tn.iatechnology.backend.service.AuditLogService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/users")
@@ -95,10 +87,8 @@ public class UserController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
-        userRepository.findById(id).ifPresent(user ->
-                auditLogService.log("DELETE", "USER", id,
-                        "Suppression de l'utilisateur : " + user.getEmail())
-        );
+        userRepository.findById(id).ifPresent(user -> auditLogService.log("DELETE", "USER", id,
+                "Suppression de l'utilisateur : " + user.getEmail()));
         userRepository.deleteById(id);
         return ResponseEntity.ok(new MessageResponse("Utilisateur supprimé"));
     }

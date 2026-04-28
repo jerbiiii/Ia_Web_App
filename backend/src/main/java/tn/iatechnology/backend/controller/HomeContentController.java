@@ -1,24 +1,15 @@
 package tn.iatechnology.backend.controller;
 
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import tn.iatechnology.backend.entity.HomeContent;
 import tn.iatechnology.backend.repository.HomeContentRepository;
 import tn.iatechnology.backend.service.AuditLogService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -89,14 +80,11 @@ public class HomeContentController {
         return ResponseEntity.ok(updated);
     }
 
-
     @DeleteMapping("/moderator/home-content/{id}")
     @PreAuthorize("hasRole('MODERATEUR') or hasRole('ADMIN')")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        homeContentRepository.findById(id).ifPresent(c ->
-                auditLogService.log("DELETE", "HOME_CONTENT", id,
-                        "Suppression du contenu : " + c.getCle())
-        );
+        homeContentRepository.findById(id).ifPresent(c -> auditLogService.log("DELETE", "HOME_CONTENT", id,
+                "Suppression du contenu : " + c.getCle()));
         homeContentRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }

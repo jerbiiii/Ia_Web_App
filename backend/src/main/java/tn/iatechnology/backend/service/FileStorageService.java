@@ -13,6 +13,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.UUID;
+import org.springframework.util.StringUtils;
+import java.util.Objects;
 
 @Service
 public class FileStorageService {
@@ -25,7 +27,20 @@ public class FileStorageService {
     }
 
     public String storeFile(MultipartFile file) throws IOException {
-        String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+        String originalFileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
+
+        // 1. Check for path traversal
+        if (originalFileName.contains("..")) {
+            throw new RuntimeException(
+                    "Nom de fichier invalide (tentative de traversée de répertoire) : " + originalFileName);
+        }
+
+        // 2. Validate file type (PDF only)
+        if (!originalFileName.toLowerCase().endsWith(".pdf")) {
+            throw new RuntimeException("Type de fichier non autorisé. Seuls les fichiers PDF sont acceptés.");
+        }
+
+        String fileName = UUID.randomUUID().toString() + "_" + originalFileName;
         Path targetLocation = this.fileStorageLocation.resolve(fileName);
         Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
         return fileName;

@@ -26,160 +26,158 @@ import java.time.LocalDateTime;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    @Autowired
-    AuthenticationManager authenticationManager;
+        @Autowired
+        AuthenticationManager authenticationManager;
 
-    @Autowired
-    UserRepository userRepository;
+        @Autowired
+        UserRepository userRepository;
 
-    @Autowired
-    PasswordEncoder encoder;
+        @Autowired
+        PasswordEncoder encoder;
 
-    @Autowired
-    JwtUtils jwtUtils;
+        @Autowired
+        JwtUtils jwtUtils;
 
-    @Autowired
-    AuditLogService auditLogService;
+        @Autowired
+        AuditLogService auditLogService;
 
-    @Autowired
-    LoginRateLimiter rateLimiter;
+        @Autowired
+        LoginRateLimiter rateLimiter;
 
-    @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(
-            @Valid @RequestBody LoginRequest loginRequest,
-            HttpServletRequest request) {
+        @PostMapping("/signin")
+        public ResponseEntity<?> authenticateUser(
+                        @Valid @RequestBody LoginRequest loginRequest,
+                        HttpServletRequest request) {
 
-        if (rateLimiter.isBlocked(loginRequest.getEmail())) {
-            return ResponseEntity.status(429)
-                    .body(new MessageResponse("Trop de tentatives. Compte bloqué pour 15 minutes."));
+                if (rateLimiter.isBlocked(loginRequest.getEmail())) {
+                        return ResponseEntity.status(429)
+                                        .body(new MessageResponse(
+                                                        "Trop de tentatives. Compte bloqué pour 15 minutes."));
+                }
+
+                try {
+                        Authentication authentication = authenticationManager.authenticate(
+                                        new UsernamePasswordAuthenticationToken(
+                                                        loginRequest.getEmail(),
+                                                        loginRequest.getPassword()));
+
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
+                        String jwt = jwtUtils.generateJwtToken(authentication);
+
+                        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+                        String role = userDetails.getAuthorities().iterator().next()
+                                        .getAuthority().replace("ROLE_", "");
+
+                        // Reset rate limiter on success
+                        rateLimiter.loginSucceeded(loginRequest.getEmail());
+
+                        // ✅ CORRECTION : log de la connexion
+                        auditLogService.log(
+                                        "LOGIN",
+                                        "USER",
+                                        userDetails.getId(),
+                                        "Connexion de l'utilisateur : " + userDetails.getEmail(),
+                                        request);
+
+                        return ResponseEntity.ok(new JwtResponse(
+                                        jwt,
+                                        userDetails.getId(),
+                                        userDetails.getEmail(),
+                                        userDetails.getNom(),
+                                        userDetails.getPrenom(),
+                                        role));
+
+                } catch (org.springframework.security.core.AuthenticationException e) {
+                        rateLimiter.loginFailed(loginRequest.getEmail());
+                        return ResponseEntity.status(401)
+                                        .body(new MessageResponse("Erreur: Email ou mot de passe incorrect!"));
+                }
         }
 
-        try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            loginRequest.getEmail(),
-                            loginRequest.getPassword()));
+        @PostMapping("/signup")
+        public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+                if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+                        return ResponseEntity.badRequest()
+                                        .body(new MessageResponse("Erreur: Email déjà utilisé!"));
+                }
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            String jwt = jwtUtils.generateJwtToken(authentication);
+                User user = new User();
+                user.setEmail(signUpRequest.getEmail());
+                user.setNom(signUpRequest.getNom());
+                user.setPrenom(signUpRequest.getPrenom());
+                user.setPassword(encoder.encode(signUpRequest.getPassword()));
+                user.setRole(Role.UTILISATEUR);
+                user.setDateInscription(LocalDateTime.now());
 
-            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-            String role = userDetails.getAuthorities().iterator().next()
-                    .getAuthority().replace("ROLE_", "");
+                userRepository.save(user);
 
-            // Reset rate limiter on success
-            rateLimiter.loginSucceeded(loginRequest.getEmail());
-
-            // ✅ CORRECTION : log de la connexion
-            auditLogService.log(
-                    "LOGIN",
-                    "USER",
-                    userDetails.getId(),
-                    "Connexion de l'utilisateur : " + userDetails.getEmail(),
-                    request
-            );
-
-            return ResponseEntity.ok(new JwtResponse(
-                    jwt,
-                    userDetails.getId(),
-                    userDetails.getEmail(),
-                    userDetails.getNom(),
-                    userDetails.getPrenom(),
-                    role));
-
-        } catch (org.springframework.security.core.AuthenticationException e) {
-            rateLimiter.loginFailed(loginRequest.getEmail());
-            return ResponseEntity.status(401)
-                    .body(new MessageResponse("Erreur: Email ou mot de passe incorrect!"));
-        }
-    }
-
-    @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            return ResponseEntity.badRequest()
-                    .body(new MessageResponse("Erreur: Email déjà utilisé!"));
+                return ResponseEntity.ok(new MessageResponse("Utilisateur enregistré avec succès!"));
         }
 
-        User user = new User();
-        user.setEmail(signUpRequest.getEmail());
-        user.setNom(signUpRequest.getNom());
-        user.setPrenom(signUpRequest.getPrenom());
-        user.setPassword(encoder.encode(signUpRequest.getPassword()));
-        user.setRole(Role.UTILISATEUR);
-        user.setDateInscription(LocalDateTime.now());
+        @PutMapping("/profile")
+        @PreAuthorize("hasRole('UTILISATEUR') or hasRole('MODERATEUR') or hasRole('ADMIN')")
+        public ResponseEntity<?> updateProfile(
+                        @RequestBody UpdateProfileRequest request,
+                        Authentication authentication) {
 
-        userRepository.save(user);
+                UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+                User user = userRepository.findById(userDetails.getId())
+                                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
 
-        return ResponseEntity.ok(new MessageResponse("Utilisateur enregistré avec succès!"));
-    }
+                user.setNom(request.getNom());
+                user.setPrenom(request.getPrenom());
+                user.setEmail(request.getEmail());
+                if (request.getPassword() != null && !request.getPassword().isEmpty()) {
+                        user.setPassword(encoder.encode(request.getPassword()));
+                }
+                userRepository.save(user);
 
-    @PutMapping("/profile")
-    @PreAuthorize("hasRole('UTILISATEUR') or hasRole('MODERATEUR') or hasRole('ADMIN')")
-    public ResponseEntity<?> updateProfile(
-            @RequestBody UpdateProfileRequest request,
-            Authentication authentication) {
+                // ✅ CORRECTION : log de la modification de profil
+                auditLogService.log(
+                                "UPDATE",
+                                "USER",
+                                userDetails.getId(),
+                                "Mise à jour du profil : " + user.getEmail());
 
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        User user = userRepository.findById(userDetails.getId())
-                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
-
-        user.setNom(request.getNom());
-        user.setPrenom(request.getPrenom());
-        user.setEmail(request.getEmail());
-        if (request.getPassword() != null && !request.getPassword().isEmpty()) {
-            user.setPassword(encoder.encode(request.getPassword()));
-        }
-        userRepository.save(user);
-
-        // ✅ CORRECTION : log de la modification de profil
-        auditLogService.log(
-                "UPDATE",
-                "USER",
-                userDetails.getId(),
-                "Mise à jour du profil : " + user.getEmail()
-        );
-
-        return ResponseEntity.ok(new MessageResponse("Profil mis à jour avec succès"));
-    }
-
-    // ✅ CORRECTION : endpoint logout pour tracer la déconnexion
-    @PostMapping("/signout")
-    @PreAuthorize("hasRole('UTILISATEUR') or hasRole('MODERATEUR') or hasRole('ADMIN')")
-    public ResponseEntity<?> logoutUser(
-            Authentication authentication,
-            HttpServletRequest request) {
-
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-
-        auditLogService.log(
-                "LOGOUT",
-                "USER",
-                userDetails.getId(),
-                "Déconnexion de l'utilisateur : " + userDetails.getEmail(),
-                request
-        );
-
-        return ResponseEntity.ok(new MessageResponse("Déconnexion enregistrée"));
-    }
-
-    @PostMapping("/admin/signup")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> registerUserByAdmin(@Valid @RequestBody SignupRequest signUpRequest) {
-        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            return ResponseEntity.badRequest()
-                    .body(new MessageResponse("Erreur: Email déjà utilisé!"));
+                return ResponseEntity.ok(new MessageResponse("Profil mis à jour avec succès"));
         }
 
-        User user = new User();
-        user.setEmail(signUpRequest.getEmail());
-        user.setNom(signUpRequest.getNom());
-        user.setPrenom(signUpRequest.getPrenom());
-        user.setPassword(encoder.encode(signUpRequest.getPassword()));
-        user.setRole(signUpRequest.getRole() != null ? signUpRequest.getRole() : Role.UTILISATEUR);
-        user.setDateInscription(LocalDateTime.now());
-        userRepository.save(user);
+        // ✅ CORRECTION : endpoint logout pour tracer la déconnexion
+        @PostMapping("/signout")
+        @PreAuthorize("hasRole('UTILISATEUR') or hasRole('MODERATEUR') or hasRole('ADMIN')")
+        public ResponseEntity<?> logoutUser(
+                        Authentication authentication,
+                        HttpServletRequest request) {
 
-        return ResponseEntity.ok(new MessageResponse("Utilisateur créé avec succès"));
-    }
+                UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
+                auditLogService.log(
+                                "LOGOUT",
+                                "USER",
+                                userDetails.getId(),
+                                "Déconnexion de l'utilisateur : " + userDetails.getEmail(),
+                                request);
+
+                return ResponseEntity.ok(new MessageResponse("Déconnexion enregistrée"));
+        }
+
+        @PostMapping("/admin/signup")
+        @PreAuthorize("hasRole('ADMIN')")
+        public ResponseEntity<?> registerUserByAdmin(@Valid @RequestBody SignupRequest signUpRequest) {
+                if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+                        return ResponseEntity.badRequest()
+                                        .body(new MessageResponse("Erreur: Email déjà utilisé!"));
+                }
+
+                User user = new User();
+                user.setEmail(signUpRequest.getEmail());
+                user.setNom(signUpRequest.getNom());
+                user.setPrenom(signUpRequest.getPrenom());
+                user.setPassword(encoder.encode(signUpRequest.getPassword()));
+                user.setRole(signUpRequest.getRole() != null ? signUpRequest.getRole() : Role.UTILISATEUR);
+                user.setDateInscription(LocalDateTime.now());
+                userRepository.save(user);
+
+                return ResponseEntity.ok(new MessageResponse("Utilisateur créé avec succès"));
+        }
 }
