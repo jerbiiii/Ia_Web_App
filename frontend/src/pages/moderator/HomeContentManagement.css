@@ -1,0 +1,511 @@
+.hcm-page {
+    padding: 1.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.hcm-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.hcm-header h2 {
+    color: #1a3c6e;
+    font-size: 1.5rem;
+    margin: 0 0 0.3rem 0;
+}
+
+.hcm-subtitle {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* Alerts */
+.hcm-alert {
+    padding: 0.8rem 1.2rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.hcm-alert-success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.hcm-alert-error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Form card */
+.hcm-form-card {
+    background: white;
+    border: 1px solid #dee2e6;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+
+.hcm-form-card h3 {
+    color: #1a3c6e;
+    margin: 0 0 1.2rem 0;
+    font-size: 1.1rem;
+}
+
+.hcm-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.hcm-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.hcm-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.hcm-field label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #495057;
+}
+
+.hcm-field input,
+.hcm-field select,
+.hcm-field textarea {
+    padding: 0.6rem 0.9rem;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: #333;
+    background: white;
+    transition: border 0.2s;
+}
+
+.hcm-field input:focus,
+.hcm-field select:focus,
+.hcm-field textarea:focus {
+    outline: none;
+    border-color: #4a90d9;
+    box-shadow: 0 0 0 2px rgba(74, 144, 217, 0.15);
+}
+
+.hcm-field input:disabled {
+    background: #f5f5f5;
+    color: #999;
+}
+
+.hcm-field small {
+    font-size: 0.75rem;
+    color: #adb5bd;
+}
+
+.hcm-field textarea {
+    resize: vertical;
+    min-height: 90px;
+}
+
+.hcm-checkbox label {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.hcm-form-actions {
+    display: flex;
+    gap: 0.8rem;
+    margin-top: 0.5rem;
+}
+
+/* Buttons */
+.btn-add {
+    background: #1a3c6e;
+    color: white;
+    border: none;
+    padding: 0.7rem 1.4rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s;
+}
+
+.btn-add:hover { background: #122b52; }
+
+.btn-save {
+    background: #1a3c6e;
+    color: white;
+    border: none;
+    padding: 0.65rem 1.4rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-save:hover { background: #122b52; }
+
+.btn-cancel {
+    background: white;
+    color: #6c757d;
+    border: 1px solid #dee2e6;
+    padding: 0.65rem 1.2rem;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-cancel:hover { background: #f5f5f5; }
+
+/* Section block */
+.hcm-section-block {
+    margin-bottom: 2rem;
+}
+
+.hcm-section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    color: #1a3c6e;
+    font-size: 1.05rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.hcm-count {
+    font-size: 0.78rem;
+    background: #e9ecef;
+    color: #6c757d;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+.hcm-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+    gap: 1.2rem;
+    align-items: flex-start;
+}
+
+/* Item card */
+.hcm-item {
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    padding: 1.4rem 1.6rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    transition: box-shadow 0.2s;
+    min-width: 0;
+}
+
+.hcm-item:hover {
+    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+}
+
+.hcm-item-inactive {
+    opacity: 0.65;
+    border-style: dashed;
+}
+
+.hcm-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.8rem;
+    margin-bottom: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.hcm-item-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.hcm-cle {
+    font-family: 'Courier New', monospace;
+    font-size: 0.82rem;
+    background: #f0f4ff;
+    color: #1a3c6e;
+    padding: 2px 8px;
+    border-radius: 5px;
+    font-weight: 700;
+}
+
+.hcm-type-badge {
+    font-size: 0.72rem;
+    background: #e9ecef;
+    color: #6c757d;
+    padding: 2px 7px;
+    border-radius: 5px;
+    font-weight: 600;
+}
+
+.hcm-inactive-badge {
+    font-size: 0.72rem;
+    background: #f8d7da;
+    color: #721c24;
+    padding: 2px 8px;
+    border-radius: 5px;
+    font-weight: 600;
+}
+
+.hcm-item-actions {
+    display: flex;
+    gap: 0.4rem;
+}
+
+.btn-icon {
+    background: none;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 4px 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.15s;
+}
+
+.btn-icon:hover {
+    background: #f5f5f5;
+    border-color: #adb5bd;
+}
+
+.btn-delete:hover {
+    background: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.hcm-libelle {
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+}
+
+.hcm-valeur {
+    font-size: 0.9rem;
+    color: #333;
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    padding: 0.6rem 0.8rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.hcm-empty-val {
+    color: #adb5bd;
+    font-style: italic;
+}
+
+/* Inline edit */
+.hcm-inline-edit {
+    margin-top: 0.5rem;
+}
+
+.hcm-inline-input {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    border: 2px solid #4a90d9;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    color: #333;
+    resize: vertical;
+    min-height: 80px;
+    outline: none;
+}
+
+.hcm-inline-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.btn-inline-save {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    padding: 5px 14px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-inline-cancel {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    padding: 5px 14px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+/* Empty state */
+.hcm-empty {
+    text-align: center;
+    padding: 3rem;
+    color: #6c757d;
+    background: white;
+    border: 1px dashed #dee2e6;
+    border-radius: 12px;
+}
+
+.hcm-empty span {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.hcm-loading {
+    text-align: center;
+    padding: 3rem;
+    color: #6c757d;
+}
+
+@media (max-width: 768px) {
+    .hcm-form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .hcm-header {
+        flex-direction: column;
+    }
+
+    .btn-add {
+        width: 100%;
+        text-align: center;
+    }
+
+    .hcm-items {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ── Badges ── */
+.hcm-default-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    background: #f1f5f9;
+    color: #64748b;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    border: 1px solid #cbd5e1;
+}
+
+.hcm-active-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    background: #dcfce7;
+    color: #166534;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+
+/* ── Hint ── */
+.hcm-hint {
+    font-size: 0.78rem;
+    color: #0369a1;
+    background: #e0f2fe;
+    border-radius: 6px;
+    padding: 6px 10px;
+    margin-bottom: 6px;
+}
+
+.hcm-valeur-default {
+    color: #94a3b8;
+    font-style: italic;
+}
+
+/* ── Action buttons (overrides generic .btn-icon) ── */
+.hcm-item-actions {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.btn-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px 11px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 600;
+    transition: opacity 0.15s, background 0.15s;
+    white-space: nowrap;
+}
+
+.btn-inline-edit       { background: #dbeafe; color: #1d4ed8; border: 1px solid #bfdbfe; }
+.btn-inline-edit:hover { background: #bfdbfe; }
+
+.btn-deactivate        { background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; }
+.btn-deactivate:hover  { background: #e5e7eb; }
+
+.btn-activate          { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+.btn-activate:hover    { background: #bbf7d0; }
+
+/* ── Delete button — soft red ── */
+.btn-delete {
+    background: #fee2e2;
+    color: #b91c1c;
+    font-weight: 700;
+    border: 1px solid #fecaca;
+}
+.btn-delete:hover {
+    background: #fecaca;
+    border-color: #fca5a5;
+}
+.btn-delete:disabled {
+    background: #f3f4f6;
+    color: #9ca3af;
+    border-color: #e5e7eb;
+    cursor: not-allowed;
+}
+
+/* ── Init button ── */
+.btn-init {
+    background-color: #0d9488;
+    color: #ffffff;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s;
+    white-space: nowrap;
+}
+.btn-init:hover    { background-color: #0f766e; }
+.btn-init:disabled { background-color: #94a3b8; cursor: not-allowed; }

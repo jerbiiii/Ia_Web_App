@@ -1,0 +1,154 @@
+/* ══════════════════════ ModerateurPanel.css ══════════════════════ */
+
+.mod-panel { max-width: 900px; margin: 0 auto; padding: 32px 24px 80px; }
+
+.mod-panel__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+.mod-panel__header h1 { font-size: 1.7rem; font-weight: 800; color: #1e293b; }
+.mod-panel__nav { display: flex; gap: 16px; flex-wrap: wrap; }
+.mod-panel__nav a {
+    color: #1d4ed8; text-decoration: none;
+    font-weight: 600; font-size: .9rem;
+}
+.mod-panel__nav a:hover { text-decoration: underline; }
+
+.mod-section { background: #fff; border-radius: 14px; padding: 28px; box-shadow: 0 2px 10px rgba(0,0,0,.06); }
+.mod-section__head {
+    display: flex; align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px; flex-wrap: wrap; gap: 10px;
+}
+.mod-section__head h2 { font-size: 1.2rem; font-weight: 700; color: #1e293b; }
+
+/* Buttons */
+.btn-add   { background: #1d4ed8; color: #fff; border: none; border-radius: 8px; padding: 10px 18px; font-weight: 700; cursor: pointer; }
+.btn-add:hover { background: #1e40af; }
+.btn-back  { background: #f1f5f9; color: #374151; border: none; border-radius: 8px; padding: 8px 14px; cursor: pointer; font-weight: 600; }
+.btn-edit  { background: #fef3c7; color: #92400e; border: none; border-radius: 6px; padding: 6px 12px; cursor: pointer; font-size: .85rem; font-weight: 600; }
+.btn-del   { background: #fee2e2; color: #991b1b; border: none; border-radius: 6px; padding: 6px 12px; cursor: pointer; font-size: .85rem; font-weight: 600; }
+.btn-save  { background: #1d4ed8; color: #fff; border: none; border-radius: 8px; padding: 12px 24px; font-weight: 700; cursor: pointer; }
+.btn-save:disabled { opacity: .6; cursor: not-allowed; }
+.btn-cancel { background: #f1f5f9; color: #374151; border: none; border-radius: 8px; padding: 12px 24px; font-weight: 600; cursor: pointer; }
+
+.mod-list { display: flex; flex-direction: column; gap: 14px; }
+.mod-empty { text-align: center; color: #94a3b8; padding: 40px; }
+.mod-item {
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+}
+.mod-item__date  { font-size: .78rem; color: #94a3b8; display: block; margin-bottom: 4px; }
+.mod-item__title { font-size: 1rem; font-weight: 700; color: #1e293b; margin-bottom: 4px; }
+.mod-item__body  { font-size: .85rem; color: #475569; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.mod-item__actions { display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; }
+
+/* Form */
+.mod-form { display: flex; flex-direction: column; gap: 18px; }
+.mod-form label { font-size: .88rem; font-weight: 600; color: #374151; display: flex; flex-direction: column; gap: 6px; }
+.mod-form input, .mod-form textarea {
+    padding: 10px 14px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: .95rem;
+    outline: none;
+    transition: border-color .2s;
+    font-family: inherit;
+    resize: vertical;
+}
+.mod-form input:focus, .mod-form textarea:focus { border-color: #1d4ed8; }
+.mod-form__checkbox { flex-direction: row !important; align-items: center; gap: 10px !important; }
+.mod-form__checkbox input { width: auto; }
+.mod-form__actions { display: flex; gap: 12px; justify-content: flex-end; }
+.required { color: #dc2626; }
+
+/* ══════════════════════ Dashboard cards ══════════════════════ */
+
+.mod-dashboard__cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 8px;
+}
+
+.mod-dash-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 24px 20px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.06);
+    transition: box-shadow .2s, transform .2s, border-color .2s;
+    position: relative;
+}
+
+.mod-dash-card:hover {
+    box-shadow: 0 6px 20px rgba(29,78,216,.12);
+    transform: translateY(-3px);
+    border-color: #1d4ed8;
+}
+
+.mod-dash-card__icon {
+    font-size: 2rem;
+    line-height: 1;
+}
+
+.mod-dash-card__body h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0 0 6px 0;
+}
+
+.mod-dash-card__body p {
+    font-size: .82rem;
+    color: #64748b;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.mod-dash-card__count {
+    display: inline-block;
+    margin-top: 8px;
+    background: #eff6ff;
+    color: #1d4ed8;
+    font-size: .75rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+}
+
+.mod-dash-card__arrow {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: #94a3b8;
+    font-size: 1.1rem;
+    transition: color .2s, right .2s;
+}
+
+.mod-dash-card:hover .mod-dash-card__arrow {
+    color: #1d4ed8;
+    right: 16px;
+}
+
+@media (max-width: 768px) {
+    .mod-dashboard__cards {
+        grid-template-columns: 1fr;
+    }
+    .mod-panel__nav {
+        gap: 10px;
+    }
+}
